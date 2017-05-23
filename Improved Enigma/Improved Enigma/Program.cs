@@ -10,7 +10,9 @@ namespace Improved_Enigma
     {
         static void Main(string[] args)
         {
+            Data d = new Data();
 
+            d.ReadDataFromCSV("Data sample");
         }
     }
 }
