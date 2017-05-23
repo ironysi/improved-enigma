@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,9 +11,7 @@ namespace Improved_Enigma
     {
         static void Main(string[] args)
         {
-            Data d = new Data();
-
-            d.ReadDataFromCSV("Data sample");
+            Data d = new Data("Data sample");
         }
     }
 }
