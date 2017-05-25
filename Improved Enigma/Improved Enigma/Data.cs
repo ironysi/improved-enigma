@@ -11,13 +11,13 @@ namespace Improved_Enigma
     class Data
     {
 
-        private DataTable allDatax = new DataTable();
+        public DataTable AllDatax { get; set; } = new DataTable();
 
 
         public Data(string fileName)
         {
             ReadDataFromCSVToDataTable(fileName);
-
+          //  PrintTest();
         }
 
 
@@ -37,33 +37,47 @@ namespace Improved_Enigma
             }
             return allData;
         }
+
         private void ReadDataFromCSVToDataTable(string fileName)
         {
             List<string> allData = ReadDataFromCSVToList(fileName);
 
             for (int i = 0; i < allData.Count() - 1; i++)
             {
-                string[] rowValues = allData[i].Split(','); //split each row with comma to get individual values  
+                string[] rowValues = allData[i].Split(';'); //split each row with comma to get individual values  
                 {
                     if (i == 0)
                     {
                         for (int j = 0; j < rowValues.Count(); j++)
                         {
-                            allDatax.Columns.Add(rowValues[j]); //add headers  
+                            AllDatax.Columns.Add(rowValues[j]); //add headers  
                         }
                     }
                     else
                     {
-                        DataRow dr = allDatax.NewRow();
+                        DataRow dr = AllDatax.NewRow();
 
                         for (int k = 0; k < rowValues.Count(); k++)
                         {
                             dr[k] = rowValues[k].ToString(); // there is 99 columns in excel
                         }
-                        allDatax.Rows.Add(dr); //add other rows  
+                        AllDatax.Rows.Add(dr); //add other rows  
                     }
                 }
             }
+        }
+
+        public void PrintTest()
+        {
+            foreach (DataRow dataRow in AllDatax.Rows)
+            {
+                foreach (var item in dataRow.ItemArray)
+                {
+                    Console.Write(item+ ";");
+                }
+                Console.WriteLine("/n");
+            }
+            Console.ReadKey();
         }
 
     }
