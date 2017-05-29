@@ -145,7 +145,7 @@ namespace Improved_Enigma
 
             for (int i = 0; i < dt.Columns.Count; i++)
             {
-                Dictionary<string,List<aStruct>> correlations = new Dictionary<string, List<aStruct> >();
+                Dictionary<string, List<aStruct>> correlations = new Dictionary<string, List<aStruct>>();
 
                 double[] columnAValues = new double[dt.Rows.Count];
 
@@ -156,21 +156,23 @@ namespace Improved_Enigma
 
                 for (int k = 0; k < dt.Columns.Count; k++)
                 {
-                    if(k != i)
+                    if (k != i)
                     {
                         double[] columnBValues = new double[dt.Rows.Count];
 
                         for (int y = 0; y < dt.Rows.Count; y++)
                         {
-                            columnBValues[y] = Double.Parse(dt.Rows[y][i].ToString());
+                            columnBValues[y] = Double.Parse(dt.Rows[y][k].ToString());
                         }
 
                         double c = Correlation.Pearson(columnAValues, columnBValues);
+                        double c1 = Correlation.Spearman(columnAValues, columnBValues);
+
                         string name = dt.Columns[k].ColumnName;
-                        aStruct a = new aStruct(name, c);
+                        aStruct a = new aStruct(name, c1);
 
 
-                        if(!correlations.ContainsKey(dt.Columns[i].ColumnName))
+                        if (!correlations.ContainsKey(dt.Columns[i].ColumnName))
                         {
                             List<aStruct> structList = new List<aStruct>();
                             structList.Add(a);
@@ -183,17 +185,15 @@ namespace Improved_Enigma
                     }
                 }
 
-          //      correlationDataTable.Columns.Add(new DataColumn(dt.Columns[i].ColumnName));
+                //      correlationDataTable.Columns.Add(new DataColumn(dt.Columns[i].ColumnName));
 
 
-                for (int j = 0; j < correlations.Count; j++)
+                for (int j = 0; j < correlations[dt.Columns[i].ColumnName].Count; j++)
                 {
-                    for (int o = 0; o < correlationDataTable.Rows.Count; o++)
-                    {
-                        correlationDataTable.Rows[o][j] = correlations[dt.Columns[j].ColumnName][o].correlation;
-                            }
+                    correlationDataTable.Rows[j][i] =  correlations[dt.Columns[i].ColumnName][j].secondColumnName +
+                          "       " + correlations[dt.Columns[i].ColumnName][j].correlation;
                 }
-                
+
             }
 
             return correlationDataTable;
