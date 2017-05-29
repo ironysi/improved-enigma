@@ -27,7 +27,7 @@ namespace DisplayApp
             DataClass data = new DataClass();
             data.
 
-            DataGrid1.DataContext = data.AllDatax;
+          //  DataGrid1.DataContext = data.AllDatax;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

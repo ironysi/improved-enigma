@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MathNet.Numerics.Statistics;
 
 namespace Improved_Enigma
 {
@@ -91,20 +92,111 @@ namespace Improved_Enigma
 
                 double result = (max / totalRows) * 100;
 
-                if((100 - result) <= magicNumber)
+                if ((100 - result) <= magicNumber)
                     data.Columns.Remove(column.ColumnName);
             }
         }
 
+        public static DataTable HashValues(DataTable dataTable)
+        {
+            DataTable copyOfData;
+            copyOfData = dataTable.Copy();
 
-       
+            for (int i = 0; i < copyOfData.Rows.Count; i++)
+            {
+                for (int k = 0; k < copyOfData.Columns.Count; k++)
+                {
+                    copyOfData.Rows[i][k] = copyOfData.Rows[i][k].GetHashCode();
+                }
+            }
 
+            return copyOfData;
+        }
+
+
+
+        struct aStruct
+        {
+            public string secondColumnName { get; set; }
+            public double correlation { get; set; }
+
+            public aStruct(string desc, double corr)
+            {
+                secondColumnName = desc;
+                correlation = corr;
+            }
+        }
+
+        private void PrintDictionary()
+        {
+
+        }
 
         public static DataTable ComputePearsonCorrelation(DataTable dt)
         {
+            DataTable correlationDataTable = dt.Copy();
+            correlationDataTable.Clear();
+
+            for (int j = 0; j < dt.Rows.Count; j++)
+            {
+                correlationDataTable.Rows.Add(correlationDataTable.NewRow());
+            }
 
 
-            return null;
+            for (int i = 0; i < dt.Columns.Count; i++)
+            {
+                Dictionary<string,List<aStruct>> correlations = new Dictionary<string, List<aStruct> >();
+
+                double[] columnAValues = new double[dt.Rows.Count];
+
+                for (int y = 0; y < dt.Rows.Count; y++)
+                {
+                    columnAValues[y] = Double.Parse(dt.Rows[y][i].ToString());
+                }
+
+                for (int k = 0; k < dt.Columns.Count; k++)
+                {
+                    if(k != i)
+                    {
+                        double[] columnBValues = new double[dt.Rows.Count];
+
+                        for (int y = 0; y < dt.Rows.Count; y++)
+                        {
+                            columnBValues[y] = Double.Parse(dt.Rows[y][i].ToString());
+                        }
+
+                        double c = Correlation.Pearson(columnAValues, columnBValues);
+                        string name = dt.Columns[k].ColumnName;
+                        aStruct a = new aStruct(name, c);
+
+
+                        if(!correlations.ContainsKey(dt.Columns[i].ColumnName))
+                        {
+                            List<aStruct> structList = new List<aStruct>();
+                            structList.Add(a);
+                            correlations.Add(dt.Columns[i].ColumnName, structList);
+                        }
+                        else
+                        {
+                            correlations[dt.Columns[i].ColumnName].Add(a);
+                        }
+                    }
+                }
+
+          //      correlationDataTable.Columns.Add(new DataColumn(dt.Columns[i].ColumnName));
+
+
+                for (int j = 0; j < correlations.Count; j++)
+                {
+                    for (int o = 0; o < correlationDataTable.Rows.Count; o++)
+                    {
+                        correlationDataTable.Rows[o][j] = correlations[dt.Columns[j].ColumnName][o].correlation;
+                            }
+                }
+                
+            }
+
+            return correlationDataTable;
         }
     }
 }

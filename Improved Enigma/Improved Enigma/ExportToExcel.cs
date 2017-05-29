@@ -5,14 +5,13 @@ using System.Linq;
 using Excel = Microsoft.Office.Interop.Excel;
 
 
-
 namespace Improved_Enigma
 {
     static class ExportToExcel
     {
-        public static void Export(DataTable tbl)
+        public static void Export(DataTable tbl, string filePath)
         {
-            string excelFilePath = "SavedFile.xlsx";         
+            string excelFilePath = filePath + ".xlsx";
 
             try
             {
