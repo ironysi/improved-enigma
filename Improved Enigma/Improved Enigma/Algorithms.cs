@@ -137,47 +137,53 @@ namespace Improved_Enigma
             DataTable correlationDataTable = dt.Copy();
             correlationDataTable.Clear();
 
+            //Create empty rows in DataTable
             for (int j = 0; j < dt.Rows.Count; j++)
             {
                 correlationDataTable.Rows.Add(correlationDataTable.NewRow());
             }
 
-
+            // loop thru columns
             for (int i = 0; i < dt.Columns.Count; i++)
             {
                 Dictionary<string, List<aStruct>> correlations = new Dictionary<string, List<aStruct>>();
 
                 double[] columnAValues = new double[dt.Rows.Count];
 
+                // save whole column to array for later use
                 for (int y = 0; y < dt.Rows.Count; y++)
                 {
                     columnAValues[y] = Double.Parse(dt.Rows[y][i].ToString());
                 }
 
+                // loop thru all columns except the one that I'm on currently
                 for (int k = 0; k < dt.Columns.Count; k++)
                 {
                     if (k != i)
                     {
                         double[] columnBValues = new double[dt.Rows.Count];
 
+                        // save whole column for later use
                         for (int y = 0; y < dt.Rows.Count; y++)
                         {
                             columnBValues[y] = Double.Parse(dt.Rows[y][k].ToString());
                         }
 
+                        // correlation methods
                         double c = Correlation.Pearson(columnAValues, columnBValues);
                         double c1 = Correlation.Spearman(columnAValues, columnBValues);
 
                         string name = dt.Columns[k].ColumnName;
                         aStruct a = new aStruct(name, c1);
 
-
+                        // create dictionary member if key does not exist
                         if (!correlations.ContainsKey(dt.Columns[i].ColumnName))
                         {
                             List<aStruct> structList = new List<aStruct>();
                             structList.Add(a);
                             correlations.Add(dt.Columns[i].ColumnName, structList);
                         }
+                        // add value to dictionary
                         else
                         {
                             correlations[dt.Columns[i].ColumnName].Add(a);
@@ -185,9 +191,7 @@ namespace Improved_Enigma
                     }
                 }
 
-                //      correlationDataTable.Columns.Add(new DataColumn(dt.Columns[i].ColumnName));
-
-
+                // save dictionary to datatable that we are returning
                 for (int j = 0; j < correlations[dt.Columns[i].ColumnName].Count; j++)
                 {
                     correlationDataTable.Rows[j][i] =  correlations[dt.Columns[i].ColumnName][j].secondColumnName +
