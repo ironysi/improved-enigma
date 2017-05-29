@@ -3,27 +3,21 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Improved_Enigma
+namespace DisplayApp
 {
-    class Data
+    class DataClass
     {
-
         public DataTable AllDatax { get; set; } = new DataTable();
-
-
-        public Data(string fileName)
-        {
-            ReadDataFromCSVToDataTable(fileName);
-          //  PrintTest();
-        }
 
 
         private List<string> ReadDataFromCSVToList(string fileName)
         {
-        List<string> allData = new List<string>();
+            List<string> allData = new List<string>();
 
-            using (var fs = File.OpenRead(".../Excel/" + fileName + ".csv"))
+            using (var fs = File.OpenRead("....../SavedFile.xlsx"))
             using (var reader = new StreamReader(fs))
             {
                 while (!reader.EndOfStream)
@@ -63,19 +57,6 @@ namespace Improved_Enigma
                     }
                 }
             }
-        }
-
-        public void PrintTest()
-        {
-            foreach (DataRow dataRow in AllDatax.Rows)
-            {
-                foreach (var item in dataRow.ItemArray)
-                {
-                    Console.Write(item+ ";");
-                }
-                Console.WriteLine("/n");
-            }
-            Console.ReadKey();
         }
 
     }

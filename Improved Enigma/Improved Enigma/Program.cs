@@ -4,7 +4,7 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+
 
 
 namespace Improved_Enigma
@@ -23,12 +23,12 @@ namespace Improved_Enigma
             Algorithms.RemoveSameValueColumns(d.AllDatax);
             Console.WriteLine("Remove same value columns: " + d.AllDatax.Columns.Count);
 
-            Algorithms.RemoveLowVarianceColumns(d.AllDatax, 5.0);
+            Algorithms.RemoveLowVarianceColumns(d.AllDatax, 8);
             Console.WriteLine("Remove columns based on magicNumber: " + d.AllDatax.Columns.Count);
 
-            SaveFile(d.AllDatax);
+          //  ExportToExcel.Export(d.AllDatax);
 
-            string hello = "hello";
+            string hello = "";
 
             string hello2 = "hello";
 
@@ -43,7 +43,8 @@ namespace Improved_Enigma
 
             Console.WriteLine(ByteArrayToString(byteArray));
             Console.WriteLine(ByteArrayToString(byteArray2));
-
+                
+            Console.WriteLine(hello.GetHashCode() );
 
 
             Console.Read();
@@ -60,21 +61,7 @@ namespace Improved_Enigma
             return hex.ToString();
         }
 
-        private static void SaveFile(DataTable dt)
-        {
-            StringBuilder sb = new StringBuilder();
 
-            IEnumerable<string> columnNames = dt.Columns.Cast<DataColumn>().
-                                              Select(column => column.ColumnName);
-            sb.AppendLine(string.Join(",", columnNames));
 
-            foreach (DataRow row in dt.Rows)
-            {
-                IEnumerable<string> fields = row.ItemArray.Select(field => field.ToString());
-                sb.AppendLine(string.Join(",", fields));
-            }
-
-            File.WriteAllText("file " + DateTime.Now.ToString("h-m") + ".csv", sb.ToString());
-        }
     }
 }

@@ -95,6 +95,17 @@ namespace Improved_Enigma
                     data.Columns.Remove(column.ColumnName);
             }
         }
+
+
+       
+
+
+        public static DataTable ComputePearsonCorrelation(DataTable dt)
+        {
+
+
+            return null;
+        }
     }
 }
 
