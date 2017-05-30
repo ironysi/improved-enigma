@@ -24,12 +24,16 @@ namespace Improved_Enigma
             Console.WriteLine("Remove same value columns: " + d.AllDatax.Columns.Count);
 
             Algorithms.RemoveLowVarianceColumns(d.AllDatax, 8);
-            Console.WriteLine("Remove columns based on magicNumber: " + d.AllDatax.Columns.Count);
+            Console.WriteLine("Remove columns based on 'variance': " + d.AllDatax.Columns.Count);
 
-           // ExportToExcel.Export(d.AllDatax, "CleanVersion");
-           // ExportToExcel.Export(Algorithms.HashValues(d.AllDatax),"Hashed");
-            ExportToExcel.Export(Algorithms.ComputePearsonCorrelation(Algorithms.HashValues(d.AllDatax)),"Correlations");
+            //  ExportToExcel.Export(NeuralNet.FillData(Algorithms.HashValues(d.AllDatax)) , "TESTTEST");
 
+            // ExportToExcel.Export(Algorithms.HashValues(d.AllDatax),"Hashed");
+            // ExportToExcel.Export(Algorithms.ComputePearsonCorrelation(Algorithms.HashValues(d.AllDatax)),"CorrelationsOnlyNumbers");
+
+            NeuralNet net = new NeuralNet();
+
+            net.FillData(Algorithms.HashValues(d.AllDatax));
 
 
             Console.Read();

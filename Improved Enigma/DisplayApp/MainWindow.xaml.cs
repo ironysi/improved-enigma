@@ -25,8 +25,6 @@ namespace DisplayApp
             InitializeComponent();
 
             DataClass data = new DataClass();
-            data.
-
           //  DataGrid1.DataContext = data.AllDatax;
         }
 

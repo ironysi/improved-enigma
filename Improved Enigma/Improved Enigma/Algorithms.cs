@@ -154,7 +154,7 @@ namespace Improved_Enigma
                 for (int y = 0; y < dt.Rows.Count; y++)
                 {
                     columnAValues[y] = Double.Parse(dt.Rows[y][i].ToString());
-                }
+                    }
 
                 // loop thru all columns except the one that I'm on currently
                 for (int k = 0; k < dt.Columns.Count; k++)
@@ -171,10 +171,10 @@ namespace Improved_Enigma
 
                         // correlation methods
                         double c = Correlation.Pearson(columnAValues, columnBValues);
-                        double c1 = Correlation.Spearman(columnAValues, columnBValues);
+                        //double c1 = Correlation.Spearman(columnAValues, columnBValues);
 
                         string name = dt.Columns[k].ColumnName;
-                        aStruct a = new aStruct(name, c1);
+                        aStruct a = new aStruct(name, c);
 
                         // create dictionary member if key does not exist
                         if (!correlations.ContainsKey(dt.Columns[i].ColumnName))
