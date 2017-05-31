@@ -26,7 +26,7 @@ namespace Improved_Enigma
             Algorithms.RemoveLowVarianceColumns(d.AllDatax, 8);
             Console.WriteLine("Remove columns based on 'variance': " + d.AllDatax.Columns.Count);
 
-            //  ExportToExcel.Export(NeuralNet.FillData(Algorithms.HashValues(d.AllDatax)) , "TESTTEST");
+
 
             // ExportToExcel.Export(Algorithms.HashValues(d.AllDatax),"Hashed");
             // ExportToExcel.Export(Algorithms.ComputePearsonCorrelation(Algorithms.HashValues(d.AllDatax)),"CorrelationsOnlyNumbers");
@@ -35,6 +35,7 @@ namespace Improved_Enigma
 
             net.FillData(Algorithms.HashValues(d.AllDatax));
             net.Execute();
+            ExportToExcel.Export(net.FillData(Algorithms.HashValues(d.AllDatax)), "TESTTEST");
 
             //Iteration #20 Error:0.647248% Target Error: 0.100000%
 
