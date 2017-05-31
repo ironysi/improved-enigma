@@ -49,20 +49,22 @@ namespace Improved_Enigma
             //Pause the console window
             Console.ReadKey();
         }
-    
 
 
-        public DataTable FillData(DataTable dataTable)
+
+        public void FillData(DataTable dataTable)
         {
             string[][] rawData = new string[dataTable.Rows.Count][];
+
+            int[] selected = new int[] { 6, 9, 10, 13, 20, 21, 22 };
 
             DataTable dt = new DataTable();
             int k = 0;
 
-            for (int i = 0; i < 24; i++)
+            for (int i = 0; i < selected.Max() + 1; i++)
             {
-              //  if (i == 6 || i == 9 || i == 10 || i == 13 || i == 20 || i == 21 || i == 22)
-               // {
+                if (selected.Any(x => x == i))
+                {
                     dt.Columns.Add(new DataColumn(dataTable.Columns[i].ColumnName));
 
                     for (int j = 0; j < dataTable.Rows.Count; j++)
@@ -71,22 +73,24 @@ namespace Improved_Enigma
                         {
                             dt.Rows.Add(dt.NewRow());
                         }
+                        else
+                        {
+                            dt.Rows[j][k] = dataTable.Rows[j][k];
 
-                        dt.Rows[j][k] = dataTable.Rows[j][i];
-                //    }
-                    k++;
+                        }
+                        k++;
+                    }
                 }
             }
-
-            for (int i = 0; i < dataTable.Rows.Count; i++)
+            for (int y = 0; y < dataTable.Rows.Count; y++)
             {
-                string[] array = new string[7];
+                string[] array = new string[selected.Length];
 
-                for (int j = 0; j < 7; j++)
+                for (int j = 0; j < selected.Length; j++)
                 {
-                    array[j] = dt.Rows[i][j].ToString();
+                    array[j] = dt.Rows[y][j].ToString();
                 }
-                rawData[i] = array;
+                rawData[y] = array;
             }
 
 
@@ -95,18 +99,13 @@ namespace Improved_Enigma
 
             doubleAllData = standarizer.StandardizeAll(rawData);
 
-            Inputs = TransferColumns(doubleAllData, 6, 0 );
+            Inputs = TransferColumns(doubleAllData, 6, 0);
             Outputs = TransferColumns(doubleAllData, 4, 6);
 
-
-            return dt;
         }
-
-        private double[][] TransferColumns( double[][] x, int numberOfColumns, int startAtPosition)
+        private double[][] TransferColumns(double[][] x, int numberOfColumns, int startAtPosition)
         {
             double[][] z = new double[x.Length][];
-
-
 
             for (int i = 0; i < x.Length; i++)
             {
@@ -141,6 +140,7 @@ namespace Improved_Enigma
 
             return x.Distinct() as List<string>;
         }
+
 
     }
 }
