@@ -34,7 +34,9 @@ namespace Improved_Enigma
             NeuralNet net = new NeuralNet();
 
             net.FillData(Algorithms.HashValues(d.AllDatax));
+            net.Execute();
 
+            //Iteration #20 Error:0.647248% Target Error: 0.100000%
 
             Console.Read();
         }
