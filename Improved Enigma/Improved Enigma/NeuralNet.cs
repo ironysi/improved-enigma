@@ -52,19 +52,16 @@ namespace Improved_Enigma
 
 
 
-        public void FillData(DataTable dataTable)
+        public void FillData(DataTable dataTable, int[] selectedColumns, string outputColumnName)
         {
             string[][] rawData = new string[dataTable.Rows.Count][];
-
-            int[] selected = new int[] { 6, 9, 10, 13, 20, 21, 22 };
 
             DataTable dt = new DataTable();
             int k = 0;
 
-            for (int i = 0; i < selected.Max() + 1; i++)
+            for (int i = 0; i < selectedColumns.Max() + 1; i++)
             {
-<<<<<<<<< Temporary merge branch 1
-                if (selected.Any(x=> x == i))
+                if (selectedColumns.Any(x => x == i))
                 {
                     dt.Columns.Add(new DataColumn(dataTable.Columns[i].ColumnName));
 
@@ -74,20 +71,19 @@ namespace Improved_Enigma
                         {
                             dt.Rows.Add(dt.NewRow());
                         }
-                        else
-                        {
-                            dt.Rows[j][k] = dataTable.Rows[j][k];
-
-                        }
-                        k++;
+                        dt.Rows[j][k] = dataTable.Rows[j][i];
                     }
+                    k++;
                 }
             }
+
+            dt.Columns[outputColumnName].SetOrdinal(dt.Columns.Count-1);
+
             for (int y = 0; y < dataTable.Rows.Count; y++)
             {
-                string[] array = new string[selected.Length];
+                string[] array = new string[selectedColumns.Length];
 
-                for (int j = 0; j < selected.Length; j++)
+                for (int j = 0; j < selectedColumns.Length; j++)
                 {
                     array[j] = dt.Rows[y][j].ToString();
                 }
@@ -95,15 +91,25 @@ namespace Improved_Enigma
             }
 
 
-            Standardizer standarizer = new Standardizer(rawData, new string[]{"numeric","numeric", "numeric",
-                "numeric", "numeric","numeric","categorical" });
+            string[] categories = new string[dt.Columns.Count]; 
+            // FILLS UP CATEGORY STRING
+            for (int i = 0; i < dt.Columns.Count-1; i++)
+            {
+                categories[i] = "numeric";
+            }
+
+            categories[dt.Columns.Count-1] = "categorical";
+
+            Standardizer standarizer = new Standardizer(rawData, categories);
 
             doubleAllData = standarizer.StandardizeAll(rawData);
 
-            Inputs = TransferColumns(doubleAllData, 6, 0);
-            Outputs = TransferColumns(doubleAllData, 4, 6);
+            int uniqueValuesCount = CountDistinctTypesOfOutput(rawData, dt.Columns.Count-1);
 
+            Inputs = TransferColumns(doubleAllData, selectedColumns.Length-1, 0);
+            Outputs = TransferColumns(doubleAllData, uniqueValuesCount, selectedColumns.Length - 1);
         }
+
         private double[][] TransferColumns(double[][] x, int numberOfColumns, int startAtPosition)
         {
             double[][] z = new double[x.Length][];
@@ -122,7 +128,7 @@ namespace Improved_Enigma
             return z;
         }
 
-        private List<string> CountDistinctTypesOfOutput(string[][] lines, int positionOfOutput)
+        private int CountDistinctTypesOfOutput(string[][] lines, int positionOfOutput)
         {
             List<string> x = new List<string>();
 
@@ -139,7 +145,7 @@ namespace Improved_Enigma
 
             Console.WriteLine(x.Distinct().Count());
 
-            return x.Distinct() as List<string>;
+            return x.Distinct().Count();
         }
 
 
