@@ -49,10 +49,10 @@ namespace Improved_Enigma
             //Pause the console window
             Console.ReadKey();
         }
+    
 
 
-
-        public void FillData(DataTable dataTable)
+        public DataTable FillData(DataTable dataTable)
         {
             string[][] rawData = new string[dataTable.Rows.Count][];
 
@@ -61,9 +61,9 @@ namespace Improved_Enigma
             DataTable dt = new DataTable();
             int k = 0;
 
-            for (int i = 0; i < selected.Max() + 1; i++)
+            for (int i = 0; i < selected.Max()+1; i++)
             {
-                if (selected.Any(x => x == i))
+                if (selected.Any(x=> x == i))
                 {
                     dt.Columns.Add(new DataColumn(dataTable.Columns[i].ColumnName));
 
@@ -73,24 +73,22 @@ namespace Improved_Enigma
                         {
                             dt.Rows.Add(dt.NewRow());
                         }
-                        else
-                        {
-                            dt.Rows[j][k] = dataTable.Rows[j][k];
 
-                        }
-                        k++;
-                    }
+                        dt.Rows[j][k] = dataTable.Rows[j][i];
+                //    }
+                    k++;
                 }
             }
-            for (int y = 0; y < dataTable.Rows.Count; y++)
+
+            for (int i = 0; i < dataTable.Rows.Count; i++)
             {
                 string[] array = new string[selected.Length];
 
                 for (int j = 0; j < selected.Length; j++)
                 {
-                    array[j] = dt.Rows[y][j].ToString();
+                    array[j] = dt.Rows[i][j].ToString();
                 }
-                rawData[y] = array;
+                rawData[i] = array;
             }
 
 
@@ -101,8 +99,8 @@ namespace Improved_Enigma
 
             Inputs = TransferColumns(doubleAllData, 6, 0);
             Outputs = TransferColumns(doubleAllData, 4, 6);
-
         }
+
         private double[][] TransferColumns(double[][] x, int numberOfColumns, int startAtPosition)
         {
             double[][] z = new double[x.Length][];
@@ -140,7 +138,6 @@ namespace Improved_Enigma
 
             return x.Distinct() as List<string>;
         }
-
 
     }
 }
