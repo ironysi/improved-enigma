@@ -49,11 +49,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Algorithms.cs" />
-    <Compile Include="Data.cs" />
-    <Compile Include="ExportToExcel.cs" />
-    <Compile Include="NeuralNet.cs" />
-    <Compile Include="Standarizer.cs" />
+    <Compile Include="DataPreprocessing\Algorithms.cs" />
+    <Compile Include="DataPreprocessing\Data.cs" />
+    <Compile Include="DataPreprocessing\ExportToExcel.cs" />
+    <Compile Include="Network\NeuralNet.cs" />
+    <Compile Include="Network\Standarizer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -61,9 +61,7 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Excel\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <COMReference Include="Microsoft.Office.Core">
       <Guid>{2DF8D04C-5BFA-101B-BDE5-00AA0044DE52}</Guid>
@@ -94,7 +92,7 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="DaxNEATCore.dll" />
+    <Content Include="Network\DaxNEATCore.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
