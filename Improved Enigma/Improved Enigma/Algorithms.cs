@@ -99,8 +99,7 @@ namespace Improved_Enigma
 
         public static DataTable HashValues(DataTable dataTable)
         {
-            DataTable copyOfData;
-            copyOfData = dataTable.Copy();
+            DataTable copyOfData = dataTable.Copy();
 
             for (int i = 0; i < copyOfData.Rows.Count; i++)
             {
