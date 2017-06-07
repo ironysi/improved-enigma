@@ -4,7 +4,7 @@ using System.Data;
 using System.IO;
 using System.Linq;
 
-namespace Improved_Enigma
+namespace Improved_Enigma.DataPreprocessing
 {
     class Data
     {
@@ -55,7 +55,7 @@ namespace Improved_Enigma
 
                         for (int k = 0; k < rowValues.Count(); k++)
                         {
-                            dr[k] = rowValues[k].ToString(); // there is 99 columns in excel
+                            dr[k] = rowValues[k]; // there is 99 columns in excel
                         }
                         AllDatax.Rows.Add(dr); //add other rows  
                     }

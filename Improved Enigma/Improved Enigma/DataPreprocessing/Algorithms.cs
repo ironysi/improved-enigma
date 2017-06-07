@@ -2,19 +2,16 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using MathNet.Numerics.Statistics;
 
-namespace Improved_Enigma
+namespace Improved_Enigma.DataPreprocessing
 {
     class Algorithms
     {
         public static void RemoveEmptyColumns(DataTable data)
         {
             bool isEmpty = false;
-            DataTable copyOfData;
-            copyOfData = data.Copy();
+            DataTable copyOfData = data.Copy();
 
             foreach (DataColumn column in copyOfData.Columns)
             {
@@ -31,7 +28,7 @@ namespace Improved_Enigma
                     }
                 }
 
-                if (isEmpty == true)
+                if (isEmpty)
                 {
                     data.Columns.Remove(column.ColumnName);
                 }
@@ -41,8 +38,7 @@ namespace Improved_Enigma
 
         public static void RemoveSameValueColumns(DataTable data)
         {
-            DataTable copyOfData;
-            copyOfData = data.Copy();
+            DataTable copyOfData = data.Copy();
 
             foreach (DataColumn column in copyOfData.Columns)
             {
@@ -58,7 +54,7 @@ namespace Improved_Enigma
                     }
                 }
 
-                if (delete == true)
+                if (delete)
                 {
                     data.Columns.Remove(column.ColumnName);
                 }
@@ -68,8 +64,7 @@ namespace Improved_Enigma
 
         public static void RemoveLowVarianceColumns(DataTable data, double magicNumber)
         {
-            DataTable copyOfData;
-            copyOfData = data.Copy();
+            DataTable copyOfData = data.Copy();
 
             foreach (DataColumn column in copyOfData.Columns)
             {
@@ -99,8 +94,7 @@ namespace Improved_Enigma
 
         public static DataTable HashValues(DataTable dataTable)
         {
-            DataTable copyOfData;
-            copyOfData = dataTable.Copy();
+            DataTable copyOfData = dataTable.Copy();
 
             for (int i = 0; i < copyOfData.Rows.Count; i++)
             {
@@ -117,22 +111,20 @@ namespace Improved_Enigma
 
         struct aStruct
         {
-            public string secondColumnName { get; set; }
-            public double correlation { get; set; }
+            public string SecondColumnName { get; private set; }
+            public double Correlation { get; private set; }
 
             public aStruct(string desc, double corr)
             {
-                secondColumnName = desc;
-                correlation = corr;
+                SecondColumnName = desc;
+                Correlation = corr;
             }
         }
 
-        private void PrintDictionary()
-        {
 
-        }
-
-        public static DataTable ComputePearsonCorrelation(DataTable dt)
+        /// <param name="type">1=Pearson, 2=Spearman, 3=Sum of these two</param>
+        /// <returns></returns>
+        public static DataTable ComputeCorrelation(DataTable dt, int type)
         {
             DataTable correlationDataTable = dt.Copy();
             correlationDataTable.Clear();
@@ -154,7 +146,7 @@ namespace Improved_Enigma
                 for (int y = 0; y < dt.Rows.Count; y++)
                 {
                     columnAValues[y] = Double.Parse(dt.Rows[y][i].ToString());
-                    }
+                }
 
                 // loop thru all columns except the one that I'm on currently
                 for (int k = 0; k < dt.Columns.Count; k++)
@@ -170,8 +162,19 @@ namespace Improved_Enigma
                         }
 
                         // correlation methods
-                        double c = Correlation.Pearson(columnAValues, columnBValues);
-                        //double c1 = Correlation.Spearman(columnAValues, columnBValues);
+                        double c = 0;
+                        switch (type)
+                        {
+                            case 1:
+                                c = Correlation.Pearson(columnAValues, columnBValues);
+                                break;
+                            case 2:
+                                c = Correlation.Spearman(columnAValues, columnBValues);
+                                break;
+                            case 3:
+                                c = Correlation.Spearman(columnAValues, columnBValues) + Correlation.Pearson(columnAValues, columnBValues);
+                                break;
+                        }
 
                         string name = dt.Columns[k].ColumnName;
                         aStruct a = new aStruct(name, c);
@@ -194,14 +197,49 @@ namespace Improved_Enigma
                 // save dictionary to datatable that we are returning
                 for (int j = 0; j < correlations[dt.Columns[i].ColumnName].Count; j++)
                 {
-                    correlationDataTable.Rows[j][i] =  correlations[dt.Columns[i].ColumnName][j].secondColumnName +
-                          "       " + correlations[dt.Columns[i].ColumnName][j].correlation;
+                    correlationDataTable.Rows[j][i] = /*correlations[dt.Columns[i].ColumnName][j].SecondColumnName + "       " */
+                        +correlations[dt.Columns[i].ColumnName][j].Correlation;
                 }
 
             }
 
             return correlationDataTable;
         }
+
+        /// <param name="data"></param>
+        /// <param name="columnName">columns selected as "Output column"</param>
+        /// <param name="columnInitialPosition">Initial position of output column</param>
+        /// <param name="threshold">Everythhing above this number will be selected</param>
+        /// <returns></returns>
+        public static int[] SelectColumnsBasedOnCorrelation(DataTable data, string columnName, int columnInitialPosition, double threshold = 0.2)
+        {
+            List<int> indexes = new List<int>();
+
+            for (int y = 0; y < data.Columns.Count - 1; y++)
+            {
+                if (y < columnInitialPosition)
+                {
+                    if (Double.Parse(data.Rows[y][columnName].ToString()) >= threshold ||
+                    Double.Parse(data.Rows[y][columnName].ToString()) <= (threshold * -1))
+                    {
+                        indexes.Add(y);
+                    }
+                }
+                else
+                {
+                    if (Double.Parse(data.Rows[y][columnName].ToString()) >= threshold ||
+                    Double.Parse(data.Rows[y][columnName].ToString()) <= (threshold * -1))
+                    {
+                        indexes.Add(y+1);
+                    }
+                }
+            }
+
+            indexes.Add(columnInitialPosition);
+
+            return indexes.ToArray();
+        }
+
     }
 }
 

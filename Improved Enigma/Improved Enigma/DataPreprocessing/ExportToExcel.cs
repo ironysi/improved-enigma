@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
+using DataTable = System.Data.DataTable;
 using Excel = Microsoft.Office.Interop.Excel;
 
 
-namespace Improved_Enigma
+namespace Improved_Enigma.DataPreprocessing
 {
     static class ExportToExcel
     {

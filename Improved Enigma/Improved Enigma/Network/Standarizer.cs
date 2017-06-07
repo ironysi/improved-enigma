@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Improved_Enigma
+namespace Improved_Enigma.Network
 {
     public class Standardizer
     {

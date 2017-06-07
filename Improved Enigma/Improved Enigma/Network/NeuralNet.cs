@@ -1,19 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Data;
+using System.Linq;
+using DaxNEATCore;
 using ML.Data;
 using ML.Data.Basic;
-using Networks.Training;
-using Util.Simple;
 using ML.EA.Train;
+using Networks.Training;
 using NEAT;
-using DaxNEATCore;
+using Util.Simple;
 
-
-
-
-namespace Improved_Enigma
+namespace Improved_Enigma.Network
 {
     class NeuralNet
     {
@@ -22,10 +19,10 @@ namespace Improved_Enigma
 
         private double[][] doubleAllData;
 
-        public void Execute()
+        public void Execute(int inputNeuronsCount, int outputNeuronsCount)
         {
             IMLDataSet trainingSet = new BasicMLDataSet(Inputs, Outputs);
-            NEATPopulation pop = new NEATPopulation(2, 6, 10000);
+            NEATPopulation pop = new NEATPopulation(inputNeuronsCount, outputNeuronsCount, 10000);
             pop.Reset();
             pop.InitialConnectionDensity = 1.0; // not required, but speeds processing.
             ICalculateScore score = new TrainingSetScore(trainingSet);
