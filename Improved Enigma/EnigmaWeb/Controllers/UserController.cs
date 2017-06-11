@@ -150,7 +150,7 @@ namespace EnigmaWeb.Models
             }
 
         }
-
+        //Send email
         public void SendVerificationLinkEmail(string emailID, string activationCode)
         {
 
@@ -159,7 +159,7 @@ namespace EnigmaWeb.Models
 
             var fromEmail = new MailAddress("mindaugas.dirma@gmail.com", "Enigma Web App");
             var toEmail = new MailAddress(emailID);
-            var fromEmailPassword = "k3bu99pl67";
+            var fromEmailPassword = "********";
             string subject = "Your account is successfully created";
             string body = "<br/><br/>We are happy to tell you that your Enigma Web App account is" +
                 " successfully created. Please click on the following link to vrify your account" +
@@ -182,7 +182,7 @@ namespace EnigmaWeb.Models
                 IsBodyHtml = true
             })
                 smtp.Send(message);
-            ScriptManager.RegisterClientScriptBlock(null, GetType(), "AlertBox", "alert('Your password send to your email id');", true);
+          // ScriptManager.RegisterClientScriptBlock(null, GetType(), "AlertBox", "alert('Your password send to your email id');", true);
         }
     }
 }
