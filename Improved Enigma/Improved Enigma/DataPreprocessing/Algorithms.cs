@@ -6,7 +6,7 @@ using MathNet.Numerics.Statistics;
 
 namespace Improved_Enigma.DataPreprocessing
 {
-    class Algorithms
+    public class Algorithms
     {
         public static void RemoveEmptyColumns(DataTable data)
         {

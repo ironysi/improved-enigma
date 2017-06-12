@@ -1,17 +1,19 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Improved_Enigma.DataPreprocessing;
 using Improved_Enigma.Network;
-using System.Data;
 
-
-
-namespace Improved_Enigma
+namespace TestApp
 {
     class Program
     {
         static void Main(string[] args)
         {
-            DataPreprocessing.Data d = new DataPreprocessing.Data("Data sample2");
+            Data d = new Data(".../Excel/", "Data sample2");
 
             Algorithms.RemoveEmptyColumns(d.AllDatax);
             Console.WriteLine("Remove empty columns: " + d.AllDatax.Columns.Count);

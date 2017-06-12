@@ -1,11 +1,43 @@
-﻿
+﻿@using EnigmaWeb.Models
+
 @{
     ViewBag.Title = "Index";
 }
 
 <h2>Index</h2>
 
-Welcome @HttpContext.Current.User.Identity.Name
+@using (Html.BeginForm("Index", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <input type="file" name="file" />
+    <input type="submit" value="OK" />
+}
+
+@foreach (UploadedFile file in Model.UploadsList)
+{
+    @file.Name
+}
+
+@using (Html.BeginForm("ExecuteAlgorithms", "Home", FormMethod.Post, new { }))
+{
+
+    <input type='Submit' value='Work' />
+}
+
+@using (Html.BeginForm("Download", "Home", FormMethod.Post, new { }))
+{
+
+    <input type='Submit' value='Download' />
+}
+
+
+<br/>Welcome @HttpContext.Current.User.Identity.Name
+
+
+
+
+
+
+
 
 @if (Request.IsAuthenticated)
 {

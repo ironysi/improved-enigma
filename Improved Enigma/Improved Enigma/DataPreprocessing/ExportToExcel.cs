@@ -5,7 +5,7 @@ using Excel = Microsoft.Office.Interop.Excel;
 
 namespace Improved_Enigma.DataPreprocessing
 {
-    static class ExportToExcel
+    public static class ExportToExcel
     {
         public static void Export(DataTable tbl, string filePath)
         {

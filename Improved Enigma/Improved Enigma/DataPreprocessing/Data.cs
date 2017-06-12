@@ -6,22 +6,22 @@ using System.Linq;
 
 namespace Improved_Enigma.DataPreprocessing
 {
-    class Data
+    public class Data
     {
         public DataTable AllDatax { get; set; } = new DataTable();
 
 
-        public Data(string fileName)
+        public Data(string path, string fileName)
         {
-            ReadDataFromCSVToDataTable(fileName);
+            ReadDataFromCSVToDataTable(path, fileName);
         }
 
 
-        private List<string> ReadDataFromCSVToList(string fileName)
+        private List<string> ReadDataFromCSVToList(string path, string fileName)
         {
         List<string> allData = new List<string>();
 
-            using (var fs = File.OpenRead(".../Excel/" + fileName + ".csv"))
+            using (var fs = File.OpenRead(path + fileName + ".csv"))
             using (var reader = new StreamReader(fs))
             {
                 while (!reader.EndOfStream)
@@ -34,9 +34,9 @@ namespace Improved_Enigma.DataPreprocessing
             return allData;
         }
 
-        private void ReadDataFromCSVToDataTable(string fileName)
+        private void ReadDataFromCSVToDataTable(string path, string fileName)
         {
-            List<string> allData = ReadDataFromCSVToList(fileName);
+            List<string> allData = ReadDataFromCSVToList(path, fileName);
 
             for (int i = 0; i < allData.Count() - 1; i++)
             {

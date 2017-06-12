@@ -12,7 +12,7 @@ using Util.Simple;
 
 namespace Improved_Enigma.Network
 {
-    class NeuralNet
+    public class NeuralNet
     {
         public double[][] Inputs { get; set; }
         public double[][] Outputs { get; set; }
