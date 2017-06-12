@@ -13,7 +13,7 @@ namespace TestApp
     {
         static void Main(string[] args)
         {
-            Data d = new Data(".../Excel/", "Data sample2");
+            Improved_Enigma.DataPreprocessing.Data d = new Improved_Enigma.DataPreprocessing.Data("../../Excel/", "original");
 
             Algorithms.RemoveEmptyColumns(d.AllDatax);
             Console.WriteLine("Remove empty columns: " + d.AllDatax.Columns.Count);
